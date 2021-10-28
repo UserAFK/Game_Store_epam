@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-//using DataAccessLayer;
+using DataAccessLayer;
 
 namespace GameStore
 {
@@ -23,7 +23,10 @@ namespace GameStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //services.AddDbContext<AppDbContext>();
+            services.AddDbContext<AppDbContext>(
+                s => s.UseSqlServer(Configuration["ConectionString"],
+                a=>a.MigrationsAssembly("DataAccessLayer"))            
+            );            
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
